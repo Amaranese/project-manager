@@ -1,0 +1,147 @@
+org: berabulut
+app: project-management-tool
+service: project-management-tool-service
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    SLS_DEBUG: ${env:SLS_DEBUG}
+    DATABASE_URL: ${env:DATABASE_URL}
+
+package:
+ individually: false
+
+functions:
+  createNewUser:
+    handler: handlers/user.create
+    events:
+      - http:
+          path: user
+          method: post
+          cors: true
+  returnUserData:
+    handler: handlers/user.login
+    events:
+      - http:
+          path: user
+          method: get
+          cors: true
+  createNewBoard:
+    handler: handlers/board.create
+    events:
+      - http:
+          path: board
+          method: post
+          cors: true
+  updateBoard:
+    handler: handlers/board.update
+    events:
+      - http:
+          path: board
+          method: put
+          cors: true
+  removeUser:
+    handler: handlers/board.removeUser
+    events:
+      - http:
+          path: user/boards
+          method: put
+          cors: true
+  returnUserRelatedBoards:
+    handler: handlers/board.boards
+    events:
+      - http:
+          path: user/boards
+          method: post
+          cors: true
+  returnBoardRelatedUsers:
+    handler: handlers/board.users
+    events:
+      - http:
+          path: board/users
+          method: post
+          cors: true
+  inviteUserToBoard:
+    handler: handlers/board.invite
+    events:
+      - http:
+          path: board/invite
+          method: put
+          cors: true 
+  createNewList:
+    handler: handlers/list.create
+    events:
+      - http:
+          path: list
+          method: post
+          cors: true
+  removeList:
+    handler: handlers/list.remove
+    events:
+      - http:
+          path: list/remove
+          method: put
+          cors: true
+  renameList:
+    handler: handlers/list.rename
+    events:
+      - http:
+          path: list/rename
+          method: put
+          cors: true
+  reorderLists:
+    handler: handlers/list.reorder
+    events:
+      - http:
+          path: list
+          method: put
+          cors: true
+  createNewTask:
+    handler: handlers/task.create
+    events:
+      - http:
+          path: task
+          method: post
+          cors: true
+  reorderTasks:
+    handler: handlers/task.reorder
+    events:
+      - http:
+          path: task-reorder
+          method: put
+          cors: true
+  switchTasks:
+    handler: handlers/task.switch
+    events:
+      - http:
+          path: task-switch
+          method: put
+          cors: true
+  updateTask:
+    handler: handlers/task.update
+    events:
+      - http:
+          path: task-update
+          method: put
+          cors: true
+  createId:
+    handler: handlers/uniqueId.create
+    events: 
+      - http:
+          path: id
+          method: get
+          cors: true          
+  returnImages:
+    handler: handlers/images.list
+    events:
+      - http:
+          path: list-images
+          method: get
+          cors: true
+  
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
