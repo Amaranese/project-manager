@@ -1,0 +1,2 @@
+1. delete board
+2. filtering bugfix
